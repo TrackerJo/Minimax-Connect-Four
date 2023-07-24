@@ -5,4 +5,4 @@ Play connect 4 against an AI that uses the minimax algorithm. This project was c
 
 
 ## Getting Started
-You can play for yourself by downloading this project here: https://github.com/TrackerJo/minimax-connect-four/releases/tag/ai or play it online here: https://replit.com/@nkemme54/Minimax-Tic-Tac-Toe
+You can play for yourself by downloading this project here: https://github.com/TrackerJo/minimax-connect-four/releases/tag/ai or play it online here: https://replit.com/@nkemme54/minimax-connect-four
