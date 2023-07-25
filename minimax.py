@@ -79,6 +79,11 @@ def findBestMove(board, boardObj, depthLimit):
     for i in range(7):
         able, row, col = boardObj.try_place_piece(i, ai, board)
         if able:
+            board[row][col] = ai
+            if evaluate(board) == 10:
+                bestMove = i
+                break
+            board[row][col] = empty
             if not boardObj.check_if_useless_move(col, ai, board):
                 board[row][col] = ai
                 moveVal = minimax(board, 0, False, boardObj,depthLimit)
