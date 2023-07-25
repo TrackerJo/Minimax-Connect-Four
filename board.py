@@ -37,8 +37,10 @@ class Board:
 
     def place_piece(self, column, piece):
         for row in range(len(self.board)-1, -1, -1):
+            #print(row)
             if self.board[row][column] == " ":
                 self.board[row][column] = piece
+                #print("Placed piece at row " + str(row + 1) + " and column " + str(column + 1))
                 return True
         return False
 
@@ -80,25 +82,23 @@ class Board:
                     return " "
         return "T"
     
-    def try_place_piece(cBoard, column, piece, board):
-        for row in range(len(board)-1, -1, -1):
-            if board[row][column] == " ":
-                return (True, row, column)
-        return (False, -1, -1)
+    
 
-    def check_if_useless_move(self, column, piece, board):
+def check_if_useless_move(column, piece, board):
+        newBoard = Board()
+        newBoard.set_board(board)
         #Get the row that the piece would be placed in
-        able, row, col = self.try_place_piece(column, piece, board)
+        able, row, col = try_place_piece(column, piece, board)
         if not able:
             return True
         #Check if the piece would be useless, if move is useless, and wont cause a win, return true
         board[row][col] = piece
-        if self.check_win() == piece:
+        if newBoard.check_win() == piece:
             board[row][col] = " "
             return False
         #Check if the piece stops the opponent from winning
         board[row][col] = "R" if piece == "B" else "B"
-        if self.check_win() == "R" if piece == "B" else "B":
+        if newBoard.check_win() == "R" if piece == "B" else "B":
             board[row][col] = " "
             return False
         
@@ -267,7 +267,11 @@ class Board:
         board[row][col] = " "
         return True
 
-
+def try_place_piece(column, piece, board):
+        for row in range(len(board)-1, -1, -1):
+            if board[row][column] == " ":
+                return (True, row, column)
+        return (False, -1, -1)
         
 
         

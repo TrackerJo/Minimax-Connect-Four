@@ -1,3 +1,6 @@
+from board import check_if_useless_move, try_place_piece
+
+
 ai, player, empty = 'B', 'R', ' '
 
 def areMovesLeft(board):
@@ -38,7 +41,7 @@ def evaluate(board):
 
 #Only need to consider placing in one of the columns, then figuring where it would go, this is a 6x7 board
 #Set a depth limit, and if it reaches that depth, evaluate the board
-def minimax(board, depth, isMax, boardObj, depthLimit):
+def minimax(board, depth, isMax, depthLimit):
     
     score = evaluate(board)
     if score == 10:
@@ -49,47 +52,49 @@ def minimax(board, depth, isMax, boardObj, depthLimit):
         return 0
     
     if depth >= depthLimit:
+       # print("Reached depth limit")
+       # print(score)
         return score
     
     if isMax:
         best = -1000
         for i in range(7):
-            able, row, col = boardObj.try_place_piece(i, ai, board)
+            able, row, col = try_place_piece(i, ai, board)
             if able:
                 
                 board[row][col] = ai
-                best = max(best, minimax(board, depth+1, not isMax, boardObj, depthLimit))
+                best = max(best, minimax(board, depth+1, not isMax, depthLimit))
                 board[row][col] = empty
                 
         return best
     else:
         best = 1000
         for i in range(7):
-            able, row, col = boardObj.try_place_piece(i, player, board)
+            able, row, col = try_place_piece(i, player, board)
             if able:
                 board[row][col] = player
-                best = min(best, minimax(board, depth+1, not isMax, boardObj, depthLimit))
+                best = min(best, minimax(board, depth+1, not isMax, depthLimit))
                 board[row][col] = empty
         return best
     
-def findBestMove(board, boardObj, depthLimit):
+def findBestMove(board, depthLimit):
     bestVal = -1000
     bestMove = -1
-    print("Finding best move")
+   # print("Finding best move")
     for i in range(7):
-        able, row, col = boardObj.try_place_piece(i, ai, board)
+        able, row, col = try_place_piece(i, ai, board)
         if able:
             board[row][col] = ai
             if evaluate(board) == 10:
                 bestMove = i
                 break
             board[row][col] = empty
-            if not boardObj.check_if_useless_move(col, ai, board):
+            if not check_if_useless_move(col, ai, board):
                 board[row][col] = ai
-                moveVal = minimax(board, 0, False, boardObj,depthLimit)
+                moveVal = minimax(board, 0, False,depthLimit)
                 board[row][col] = empty
                 if moveVal > bestVal:
                     bestMove = i
                     bestVal = moveVal
-    print("Found best move")
+    #print("Found best move")
     return bestMove
